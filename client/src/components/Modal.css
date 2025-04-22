@@ -1,0 +1,114 @@
+.modalBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modalContainer {
+  width: 480px;
+  background: linear-gradient(to bottom right, #1e1e2f, #292942);
+  color: white;
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: modalPop 0.3s ease-out;
+}
+
+@keyframes modalPop {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-align: center;
+  background: linear-gradient(90deg, #ff6a00, #ee0979);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.titleCloseBtn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.titleCloseBtn button {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #ff5f5f;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+.titleCloseBtn button:hover {
+  transform: scale(1.2);
+}
+
+.modalContainer .body {
+  font-size: 1.2rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.modalContainer .footer {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.modalContainer .footer button {
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  color: white;
+  transition: all 0.3s ease-in-out;
+}
+.modalContainer .footer button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 114, 255, 0.4);
+}
+
+#cancelBtn {
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+}
+
+.address {
+  display: block;
+  margin: 20px auto;
+  height: 35px;
+  width: 100%;
+  max-width: 330px;
+  padding: 0 10px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background-color: #1f1f2f;
+  color: white;
+  text-align: center;
+}
+.address:focus {
+  outline: none;
+  border-color: #00c6ff;
+  background-color: #2c2c3c;
+}

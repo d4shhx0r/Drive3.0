@@ -1,0 +1,122 @@
+/* Reset & Fonts */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+body {
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* Hero Header with Fancy Curve */
+header {
+  position: relative;
+  width: 100%;
+  padding: 100px 20px 80px;
+  background: radial-gradient(circle at 20% 20%, #1e3c72, #2a5298);
+  border-radius: 0 0 80% 80% / 30%;
+  text-align: center;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+header .overlay {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  background: linear-gradient(to right, #ff6a00, #ee0979);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: #dcdcdc;
+  font-weight: 400;
+  margin-bottom: 30px;
+}
+
+p {
+  font-size: 1rem;
+  color: #bbb;
+  max-width: 600px;
+  margin: 0 auto 20px;
+}
+
+/* Share Button */
+.share {
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  padding: 14px 28px;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 114, 255, 0.4);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+.share:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(0, 114, 255, 0.5);
+}
+
+/* App Wrapper */
+.App {
+  padding: 20px;
+  text-align: center;
+}
+
+/* Animated Background Layers (optional) */
+.bg,
+.bg2,
+.bg3 {
+  position: fixed;
+  top: 0;
+  left: -50%;
+  right: -50%;
+  bottom: 0;
+  opacity: 0.1;
+  z-index: -1;
+  animation: slide 4s ease-in-out infinite alternate;
+}
+.bg2 {
+  animation-direction: alternate-reverse;
+  animation-duration: 5s;
+}
+.bg3 {
+  animation-duration: 6s;
+}
+@keyframes slide {
+  0% {
+    transform: translateX(-20%);
+  }
+  100% {
+    transform: translateX(20%);
+  }
+}
+
+/* Optional: Spinning logo */
+.App-logo {
+  height: 40vmin;
+  animation: App-logo-spin infinite 20s linear;
+}
+@keyframes App-logo-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

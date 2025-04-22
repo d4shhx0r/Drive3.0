@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import FileUpload from "./components/FileUpload";
 import Display from "./components/Display";
 import Modal from "./components/Modal";
+import WalletConnect from "./components/WalletConnect";
 import "./App.css";
 
 function App() {
@@ -11,65 +12,87 @@ function App() {
   const [contract, setContract] = useState(null);
   const [provider, setProvider] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+
+  const connectWallet = async () => {
+    try {
+      const ethProvider = new ethers.providers.Web3Provider(window.ethereum);
+      await ethProvider.send("eth_requestAccounts", []);
+      const signer = ethProvider.getSigner();
+      const address = await signer.getAddress();
+
+      const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // your deployed contract address
+      const uploadContract = new ethers.Contract(contractAddress, Upload.abi, signer);
+
+      setAccount(address);
+      setProvider(ethProvider);
+      setContract(uploadContract);
+      setIsConnected(true);
+      localStorage.setItem("connected", "true");
+
+      window.ethereum.on("chainChanged", () => window.location.reload());
+      window.ethereum.on("accountsChanged", () => window.location.reload());
+    } catch (error) {
+      console.error("Wallet connection failed:", error);
+    }
+  };
+
+  const disconnectWallet = () => {
+    setAccount("");
+    setProvider(null);
+    setContract(null);
+    setIsConnected(false);
+    localStorage.removeItem("connected");
+  };
 
   useEffect(() => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    const loadProvider = async () => {
-      if (provider) {
-        window.ethereum.on("chainChanged", () => {
-          window.location.reload();
-        });
-
-        window.ethereum.on("accountsChanged", () => {
-          window.location.reload();
-        });
-        await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-        setAccount(address);
-        let contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-
-        const contract = new ethers.Contract(
-          contractAddress,
-          Upload.abi,
-          signer
-        );
-        //console.log(contract);
-        setContract(contract);
-        setProvider(provider);
-      } else {
-        console.error("Metamask is not installed");
-      }
-    };
-    provider && loadProvider();
+    if (window.ethereum && localStorage.getItem("connected") === "true") {
+      connectWallet();
+    }
   }, []);
+
   return (
     <>
-      {!modalOpen && (
-        <button className="share" onClick={() => setModalOpen(true)}>
-          Share
-        </button>
-      )}
       {modalOpen && (
-        <Modal setModalOpen={setModalOpen} contract={contract}></Modal>
+        <Modal setModalOpen={setModalOpen} contract={contract} />
       )}
-
       <div className="App">
-        <h1 style={{ color: "white" }}>File Sharing Blockchain</h1>
-        <div class="bg"></div>
-        <div class="bg bg2"></div>
-        <div class="bg bg3"></div>
+        <header>
+          <div className="overlay">
+            <h1>Drive 3.0</h1>
+            <h3>Decentralized File Sharing with Blockchain</h3>
+            <WalletConnect
+              account={account}
+              connectWallet={connectWallet}
+              disconnectWallet={disconnectWallet}
+            />
+            {isConnected && (
+              <button className="share" onClick={() => setModalOpen(true)}>
+                Share
+              </button>
+            )}
+          </div>
+        </header>
 
-        <p style={{ color: "white" }}>
-          Account Address : {account ? account : "Not connected"}
-        </p>
-        <FileUpload
-          account={account}
-          provider={provider}
-          contract={contract}
-        ></FileUpload>
-        <Display contract={contract} account={account}></Display>
+        {isConnected && (
+          <>
+            <p style={{ color: "white", margin: "20px 0" }}>
+              Account: {account}
+            </p>
+            <FileUpload
+              account={account}
+              provider={provider}
+              contract={contract}
+            />
+            <Display contract={contract} account={account} />
+          </>
+        )}
+
+        {!isConnected && (
+          <p style={{ marginTop: "50px", color: "#ccc" }}>
+            Please connect your wallet to continue.
+          </p>
+        )}
       </div>
     </>
   );
